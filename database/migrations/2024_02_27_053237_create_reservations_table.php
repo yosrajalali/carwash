@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('service_id')->constrained()->cascadeOnDelete();
-            $table->dateTime('reservation_time');
+            $table->date('reservation_date');
+            $table->time('reservation_time');
             $table->string('tracking_code')->unique();
             $table->timestamps();
         });
