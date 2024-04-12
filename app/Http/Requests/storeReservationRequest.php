@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
@@ -23,44 +24,24 @@ class storeReservationRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-//    public function rules(): array
-//    {
-//        $rules = [
-//            'first_name' => ['required', 'string'],
-//            'last_name' => ['required', 'string'],
-//            'phone_number' => [
-//                'required',
-//                'regex:/^09[0-9]{9}$/',
-//            ],
-//            'reservation_date' => ['required', 'date'],
-//            'time_option' => ['required', 'in:earliest,choose'],
-//        ];
-//
-//
-//        if ($this->input('time_option') === 'choose') {
-//            $rules['reservation_time'] = ['required'];
-//        }
-//
-//        return $rules;
-//    }
-
     public function rules(): array
     {
-
-        return [
-            'first_name' => ['required', 'string'],
-            'last_name' => ['required', 'string'],
-            'phone_number' => [
+        return  [
+            'time_option' => ['required', 'in:earliest,choose'],
+            'reservation_time'=>[
                 'required',
-                'regex:/^09[0-9]{9}$/',
-//                Route::unique('users', 'phone_number')->ignore($userId)
+                'date_format:Y-m-d H:i:s',
+                'after_or_equal:' . now()->format('Y-m-d H:i:s'),
+                function ($attribute, $value, $fail) {
+                    // Check if reservation time is within 3 days from today
+                    $threeDaysLater = now()->addDays(3)->startOfDay();
+                    $reservationTime = \Carbon\Carbon::parse($value);
+                    if ($reservationTime->startOfDay() > $threeDaysLater) {
+                        $fail('The reservation date and time cannot be more than 3 days from now.');
+                    }
+                },
             ],
-            'reservation_date' => ['required', 'date'],
-            'reservation_time' => ['required'],
-            'time_option' => [
-                'required',
-                'in:earliest,choose',
-            ],
+            'service_id' => ['required'],
         ];
     }
 

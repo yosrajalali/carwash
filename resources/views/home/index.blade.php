@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turbo - Car Wash Free Bootstrap5 HTML Website Template</title>
+    <title>Car Wash</title>
 
     <!--vendor css ================================================== -->
     <link rel="stylesheet" href="/css/vendor.css">
@@ -43,43 +43,67 @@
     @if(session('tracking_code'))
         <div class="alert alert-info alert-dismissible fade show" role="alert">
             Tracking Code: {{ session('tracking_code') }}
-
             <p> <a href="#" onclick="addMoreServices(event)">add more services</a>  or <a href="{{ route('receipt.show', request('user_id')) }}">check your receipt</a></p>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
 
+    @if(session('success'))
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <div class="container-fluid">
-        <a class="navbar-brand" href="index.html"><img src="images/main-logo-light.png" alt="logo"></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-                aria-controls="offcanvasNavbar">
-            <iconify-icon icon="system-uicons:menu-hamburger" class="hamburger-menu"></iconify-icon>
-        </button>
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
-             aria-labelledby="offcanvasNavbarLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title text-white" id="offcanvasNavbarLabel">Menu</h5>
-                <button type="button" class="btn-close btn-close-white text-reset" data-bs-dismiss="offcanvas"
-                        aria-label="Close"></button>
-            </div>
+        <a class="navbar-brand" href="{{route('home.index')}}"><img src="images/main-logo-light.png" alt="logo"></a>
+
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
             <div class="offcanvas-body">
-                <ul
-                    class="navbar-nav align-items-center justify-content-end justify-content-xxl-center flex-grow-1 pe-3">
+
+
+                <ul class="navbar-nav align-items-center justify-content-end justify-content-xxl-center flex-grow-1 pe-3">
                     <li class="nav-item">
-                        <a class="nav-link text-white text-uppercase  active mx-2 px-3 mb-2 mb-lg-0"
-                           aria-current="page" href="index.html">home</a>
+                        <a class="nav-link text-white text-uppercase active mx-2 px-3 mb-2 mb-lg-0" aria-current="page" href="{{route('home.index')}}">home</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link text-white text-uppercase  mx-2 px-3 mb-2 mb-lg-0"
-                           href="#price">booking</a>
+                        <a class="nav-link text-white text-uppercase mx-2 px-3 mb-2 mb-lg-0" href="#price">booking</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white text-uppercase  mx-2 px-3 mb-2 mb-lg-0" href="#">Track your reservations</a>
+                        <a class="nav-link text-white text-uppercase mx-2 px-3 mb-2 mb-lg-0" href="{{ route('tracking.index') }}">Tracking</a>
                     </li>
-
                 </ul>
 
+                <ul class="navbar-nav align-items-center justify-content-end">
+                    @auth
+                        @if($user->is_admin)
+                            <!-- Show admin link for admin users -->
+                            <li class="nav-item">
+                                <a class="nav-link text-white mx-2 px-3 mb-2 mb-lg-0 text-capitalize" href="{{ route('admin.dashboard') }}">Admin Dashboard</a>
+                            </li>
+                        @endif
+                        <!-- Profile link for logged-in users -->
+                        <li class="nav-item">
+                            <a class="nav-link text-white mx-2 px-3 mb-2 mb-lg-0 text-capitalize" href="{{route('profile.show')}}">profile</a>
+                        </li>
+                        <!-- Show logout form if user is logged in -->
+                        <li class="nav-item">
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="nav-link text-white mx-2 px-3 mb-2 mb-lg-0 text-capitalize">logout</button>
+                            </form>
+                        </li>
+                    @else
+                        <!-- Show login and register links if user is not logged in -->
+                        <li class="nav-item">
+                            <a class="nav-link text-white mx-2 px-3 mb-2 mb-lg-0 text-capitalize" href="{{ route('login.show') }}">login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white mx-2 px-3 mb-2 mb-lg-0 text-capitalize" href="{{ route('register.check') }}">register</a>
+                        </li>
+                    @endauth
+                </ul>
             </div>
         </div>
     </div>

@@ -9,6 +9,8 @@ class Service extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name', 'duration_minutes', 'price'];
+
     public function reservations()
     {
         $this->hasMany(Reservation::class);
@@ -18,4 +20,5 @@ class Service extends Model
     {
         $this->belongsTo(Station::class);
     }
+
 }

@@ -41,9 +41,7 @@
                         <th class="px-4 py-2 text-xs text-gray-500 ">
                             Tracking Code
                         </th>
-                        <th class="px-4 py-2 text-xs text-gray-500 ">
-                           Reservation Date
-                        </th>
+
                         <th class="px-4 py-2 text-xs text-gray-500 ">
                             Price
                         </th>
@@ -66,9 +64,7 @@
                                     {{$reservation->tracking_code}}
                                 </div>
                             </td>
-                            <td class="px-6 py-4 text-sm text-gray-500">
-                                {{$reservation->reservation_date . ' ' . $reservation->reservation_time}}
-                            </td>
+
                             <td class="px-6 py-4">
                                 {{$reservation->service->price}}
                             </td>

@@ -26,7 +26,8 @@ class UserFactory extends Factory
         return [
             'first_name' => fake()->firstName,
             'last_name' => fake()->lastName,
-            'phone_number'=> fake()->phoneNumber
+            'phone_number' => '09' . fake()->regexify('[0-9]{9}'),
+            'password' => static::$password ??= Hash::make('12345678'),
         ];
     }
 
